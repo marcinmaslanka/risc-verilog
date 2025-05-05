@@ -31,7 +31,7 @@ module mips32 (clk1, clk2);
 
   // Instruction Opcodes
   parameter add   = 6'b000000, sub   = 6'b000001,
-            and   = 6'b000010, or    = 6'b000011,
+            and_   = 6'b000010, or_    = 6'b000011,
             slt   = 6'b000100, mul   = 6'b000101,
             hlt   = 6'b111111, lw    = 6'b001000,
             sw    = 6'b001001, addi  = 6'b001010,
@@ -76,7 +76,7 @@ module mips32 (clk1, clk2);
     id_ex_imm <= #2 {{16{if_id_ir[15]}}, if_id_ir[15:0]}; // Sign-extend
 
     case (if_id_ir[31:26])
-      add, sub, and, or, slt, mul: id_ex_type <= #2 rr_alu;
+      add, sub, and_, or_, slt, mul: id_ex_type <= #2 rr_alu;
       addi, subi, slti:           id_ex_type <= #2 rm_alu;
       lw:                         id_ex_type <= #2 load;
       sw:                         id_ex_type <= #2 store;
@@ -100,8 +100,8 @@ module mips32 (clk1, clk2);
         case (id_ex_ir[31:26])
           add: ex_mem_aluout <= #2 id_ex_a + id_ex_b;
           sub: ex_mem_aluout <= #2 id_ex_a - id_ex_b;
-          and: ex_mem_aluout <= #2 id_ex_a & id_ex_b;
-          or:  ex_mem_aluout <= #2 id_ex_a | id_ex_b;
+          and_: ex_mem_aluout <= #2 id_ex_a & id_ex_b;
+          or_:  ex_mem_aluout <= #2 id_ex_a | id_ex_b;
           slt: ex_mem_aluout <= #2 (id_ex_a < id_ex_b);
           mul: ex_mem_aluout <= #2 id_ex_a * id_ex_b;
           default: ex_mem_aluout <= #2 32'hxxxxxxxx;
