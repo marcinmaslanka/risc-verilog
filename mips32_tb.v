@@ -8,8 +8,8 @@
 //   The processor is tested with manually initialized register values and
 //   program instructions loaded into memory.
 //
-// Author: [Your Name]
-// Date: [Today's Date]
+// Author: Marcin Maslanka
+// Date: 05.05.2025
 // ============================================================================
 
 module mips32_tb;
