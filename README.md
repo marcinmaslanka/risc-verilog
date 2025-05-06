@@ -52,11 +52,13 @@ gtkwave dump.vcd
 
 ## 🧪 Supported Instructions
 Instruction	Type	Description
+```
 add, sub, and, or, slt, mul	R-type	ALU operations
 addi, subi, slti	I-type	Immediate ALU operations
 lw, sw	I-type	Load/store word from/to memory
 beqz, bneqz	I-type	Branch if equal/not equal zero
 hlt	I-type	Halt processor execution
+```
 
 ## 📦 Parameters
 Register File: 32 registers (32-bit each)
@@ -66,20 +68,11 @@ Memory: 1024 words (32-bit each)
 Instruction Format: MIPS-like 32-bit
 
 ## 📈 Pipeline Stages
-rust
-Kopieren
-Bearbeiten
+```rust
 IF  -> ID  -> EX  -> MEM -> WB
+```
 Each stage runs on either clk1 or clk2 to emulate instruction flow and parallelism.
 
-## 💡 Future Improvements
-Data hazard detection and forwarding
-
-Stall and flush logic
-
-Integration with assembler for program loading
-
-More MIPS instructions (e.g., jr, jal, div, nop)
 
 ## 🙋‍♂️ Contributions
 Contributions, bug reports, and feature requests are welcome! Fork this repository and create a pull request.
