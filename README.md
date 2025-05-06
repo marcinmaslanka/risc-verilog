@@ -26,8 +26,6 @@ mips32/
 
 - Verilog simulator such as:
   - [Icarus Verilog](http://iverilog.icarus.com/)
-  - [ModelSim / QuestaSim](https://eda.sw.siemens.com/en-US/ic/modelsim/)
-  - Synopsys VCS or Cadence Xcelium
 - Optional: GTKWave for waveform viewing
 
 ### Simulation
