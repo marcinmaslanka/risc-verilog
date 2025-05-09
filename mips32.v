@@ -21,7 +21,7 @@ module mips32 (clk1, clk2);
   reg [31:0] pc, if_id_ir, if_id_npc;
   reg [31:0] id_ex_ir, id_ex_npc, id_ex_a, id_ex_b, id_ex_imm;
   reg [2:0] id_ex_type, ex_mem_type, mem_wb_type;
-  reg [31:0] ex_mem_ir, ex_mem_npc, ex_mem_aluout, ex_mem_b;
+  reg [31:0] ex_mem_ir, ex_mem_aluout, ex_mem_b;
   reg        ex_mem_cond;
   reg [31:0] mem_wb_ir, mem_wb_aluout, mem_wb_lmd;
 
@@ -31,7 +31,7 @@ module mips32 (clk1, clk2);
 
   // Instruction Opcodes
   parameter add   = 6'b000000, sub   = 6'b000001,
-            and_   = 6'b000010, or_    = 6'b000011,
+            and_  = 6'b000010, or_   = 6'b000011,
             slt   = 6'b000100, mul   = 6'b000101,
             hlt   = 6'b111111, lw    = 6'b001000,
             sw    = 6'b001001, addi  = 6'b001010,
@@ -50,14 +50,18 @@ module mips32 (clk1, clk2);
   // IF Stage
   // ------------------------
   always @(posedge clk1)
-  if (!halted) begin
+  if (halted == 0) 
+  begin
     if (((ex_mem_ir[31:26] == beqz) && (ex_mem_cond == 1)) ||
-        ((ex_mem_ir[31:26] == bneqz) && (ex_mem_cond == 0))) begin
+        ((ex_mem_ir[31:26] == bneqz) && (ex_mem_cond == 0))) 
+    begin
       if_id_ir  <= #2 mem[ex_mem_aluout];
+      taken_branch <= #2 1'b1;
       if_id_npc <= #2 ex_mem_aluout + 1;
       pc        <= #2 ex_mem_aluout + 1;
-      taken_branch <= #2 1'b1;
-    end else begin
+    end 
+    else 
+    begin
       if_id_ir  <= #2 mem[pc];
       if_id_npc <= #2 pc + 1;
       pc        <= #2 pc + 1;
@@ -68,12 +72,14 @@ module mips32 (clk1, clk2);
   // ID Stage
   // ------------------------
   always @(posedge clk2)
-  if (!halted) begin
-    id_ex_a   <= #2 (if_id_ir[25:21] == 5'b00000) ? 0 : regfile[if_id_ir[25:21]];
-    id_ex_b   <= #2 (if_id_ir[20:16] == 5'b00000) ? 0 : regfile[if_id_ir[20:16]];
-    id_ex_ir  <= #2 if_id_ir;
-    id_ex_npc <= #2 if_id_npc;
-    id_ex_imm <= #2 {{16{if_id_ir[15]}}, if_id_ir[15:0]}; // Sign-extend
+    if (halted == 0) 
+    begin
+        id_ex_a   <= #2 (if_id_ir[25:21] == 5'b00000) ? 0 : regfile[if_id_ir[25:21]];
+        id_ex_b   <= #2 (if_id_ir[20:16] == 5'b00000) ? 0 : regfile[if_id_ir[20:16]];
+    
+        id_ex_npc <= #2 if_id_npc;
+        id_ex_ir  <= #2 if_id_ir;
+        id_ex_imm <= #2 {{16{if_id_ir[15]}}, if_id_ir[15:0]}; // Sign-extend
 
     case (if_id_ir[31:26])
       add, sub, and_, or_, slt, mul: id_ex_type <= #2 rr_alu;
@@ -90,7 +96,8 @@ module mips32 (clk1, clk2);
   // EX Stage
   // ------------------------
   always @(posedge clk1)
-  if (!halted) begin
+  if (halted == 0) 
+  begin
     ex_mem_type <= #2 id_ex_type;
     ex_mem_ir   <= #2 id_ex_ir;
     taken_branch <= #2 0;
@@ -102,7 +109,7 @@ module mips32 (clk1, clk2);
           sub: ex_mem_aluout <= #2 id_ex_a - id_ex_b;
           and_: ex_mem_aluout <= #2 id_ex_a & id_ex_b;
           or_:  ex_mem_aluout <= #2 id_ex_a | id_ex_b;
-          slt: ex_mem_aluout <= #2 (id_ex_a < id_ex_b);
+          slt: ex_mem_aluout <= #2 id_ex_a < id_ex_b;
           mul: ex_mem_aluout <= #2 id_ex_a * id_ex_b;
           default: ex_mem_aluout <= #2 32'hxxxxxxxx;
         endcase
@@ -117,12 +124,14 @@ module mips32 (clk1, clk2);
         endcase
       end
 
-      load, store: begin
+      load, store: 
+      begin
         ex_mem_aluout <= #2 id_ex_a + id_ex_imm;
         ex_mem_b      <= #2 id_ex_b;
       end
 
-      branch: begin
+      branch: 
+      begin
         ex_mem_aluout <= #2 id_ex_npc + id_ex_imm;
         ex_mem_cond   <= #2 (id_ex_a == 0);
       end
@@ -133,14 +142,15 @@ module mips32 (clk1, clk2);
   // MEM Stage
   // ------------------------
   always @(posedge clk2)
-  if (!halted) begin
+  if (halted == 0) 
+  begin
     mem_wb_type <= #2 ex_mem_type;
     mem_wb_ir   <= #2 ex_mem_ir;
 
     case (ex_mem_type)
       rr_alu, rm_alu: mem_wb_aluout <= #2 ex_mem_aluout;
       load: mem_wb_lmd <= #2 mem[ex_mem_aluout];
-      store: if (!taken_branch)
+      store: if (taken_branch == 0)
                mem[ex_mem_aluout] <= #2 ex_mem_b;
     endcase
   end
@@ -149,11 +159,12 @@ module mips32 (clk1, clk2);
   // WB Stage
   // ------------------------
   always @(posedge clk1)
-  if (!taken_branch) begin
+  begin
+  if (taken_branch ==0)
     case (mem_wb_type)
-      rr_alu: regfile[mem_wb_ir[15:11]] <= #2 mem_wb_aluout;
-      rm_alu,
-      load:   regfile[mem_wb_ir[20:16]] <= #2 mem_wb_aluout;
+      rr_alu: regfile [mem_wb_ir[15:11]] <= #2 mem_wb_aluout;
+      rm_alu: regfile [mem_wb_ir[20:16]] <= #2 mem_wb_aluout;
+      load:   regfile [mem_wb_ir[20:16]] <= #2 mem_wb_lmd;
       halt:   halted <= #2 1'b1;
     endcase
   end
