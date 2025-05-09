@@ -1,73 +1,74 @@
 // ============================================================================
 // Testbench: MIPS32 Pipelined Processor
 // Description:
-//   This testbench instantiates and verifies the functionality of the
-//   5-stage pipelined MIPS32 processor by simulating a short program
-//   consisting of addi and add instructions, followed by a halt.
+//   This testbench displays register and memory values after each step.
+//   It loads a small program that reads a value from memory,
+//   adds 45 to it, and writes it back.
 //
-//   The processor is tested with manually initialized register values and
-//   program instructions loaded into memory.
+//   Waveform output is also generated for debugging via GTKWave.
 //
 // Author: Marcin Maslanka  
-// Date: 05.05.2025
+// Date: 06.05.2025
 // ============================================================================
 
-module mips32_tb;
+module mips32_tb2;
 
-  // Clock signals for pipeline stages
+  // Clock signals for both phases
   reg clk1, clk2;
 
-  // Loop index for initialization and result display
+  // Loop variable
   integer k;
 
-  // Instantiate the Device Under Test (DUT)
+  // Device Under Test (DUT): instance of the processor
   mips32 uut(clk1, clk2);
 
-  // Clock generation: alternating clk1 and clk2
-  initial begin
-    clk1 = 0;
-    clk2 = 0;
-    repeat (20) begin
-      #5 clk1 = 1; #5 clk1 = 0; // Positive edge of clk1
-      #5 clk2 = 1; #5 clk2 = 0; // Positive edge of clk2
+  // Clock generator: alternates rising edges for clk1 and clk2
+  initial 
+  begin
+    clk1 = 0; clk2 = 0;
+
+    // Waveform output setup
+    $dumpfile("mips32_waveform.vcd");  // Output file for GTKWave
+    $dumpvars(0, mips32_tb2);          // Dump all variables in this module
+
+    // 50 clock cycles (each iteration represents one full cycle)
+    repeat (50) 
+    begin
+      #5 clk1 = 1; #5 clk1 = 0;
+      #5 clk2 = 1; #5 clk2 = 0;
+
+      // Display key register and memory values
+      $monitor("t=%0t | pc=%0d | r1=%0d | r2=%0d | mem[120]=%0d | mem[121]=%0d",
+               $time, uut.pc, uut.regfile[1], uut.regfile[2], uut.mem[120], uut.mem[121]);
     end
   end
 
-  // Initial setup: Register values, program instructions, processor state
-  initial begin
-    // Initialize register file: R0 to R31 = 0 to 31
-    for (k = 0; k < 32; k = k + 1)
-      uut.regfile[k] = k;
+  // Initialization of memory and registers
+  initial
+  begin
+    // Initial state: r1 points to memory address 120
+    //uut.regfile[1] = 120;        // r1 = 120 (address)
+    
 
-    // Load instruction memory with test program
-    uut.mem[0] = 32'h2801000a; // addi r1, r0, 10   ; r1 = 10
-    uut.mem[1] = 32'h28020014; // addi r2, r0, 20   ; r2 = 20
-    uut.mem[2] = 32'h28030019; // addi r3, r0, 25   ; r3 = 25
-    uut.mem[3] = 32'h00222000; // add  r4, r1, r2   ; r4 = r1 + r2 = 30
-    uut.mem[4] = 32'h0ce77800; // (dummy/inert instruction)
-    uut.mem[5] = 32'h00832800; // add  r5, r4, r3   ; r5 = r4 + r3 = 55
-    uut.mem[6] = 32'hfc000000; // hlt              ; halt the processor
+    // Load program instructions (machine code)
+    uut.mem[0] = 32'h28010078; // addi r1, r0, 120       ; r1 = 120
+    uut.mem[1] = 32'h0ce77800; // dummy instruction      ; pipeline spacing
+    uut.mem[2] = 32'h20220000; // lw   r2, 0(r1)         ; r2 = mem[120]
+    uut.mem[3] = 32'h0ce77800; // dummy
+    uut.mem[4] = 32'h2842002d; // addi r2, r2, 45        ; r2 += 45
+    uut.mem[5] = 32'h0ce77800; // dummy
+    uut.mem[6] = 32'h24220001; // sw   r2, 1(r1)         ; mem[121] = r2
+    uut.mem[7] = 32'hfc000000; // hlt                    ; halt execution
 
-    // Reset processor state
-    uut.halted = 0;
+    uut.mem[120]   = 85;         // memory[120] = 85
+
+    // Initialize control signals
     uut.pc = 0;
+    uut.halted = 0;
     uut.taken_branch = 0;
 
     // Wait for simulation to complete
-    #280;
-
-    // Display result registers R0 to R5
-    for (k = 0; k < 6; k = k + 1)
-      $display("R%1d = %2d", k, uut.regfile[k]);
-  end
-
-  // VCD waveform generation
-  initial begin
-    $dumpfile("mips32_tb.vcd");
-    $dumpvars(0, mips32_tb);
-    #300;
-    $display("Simulation finished.");
-    $finish;
+    #200;
   end
 
 endmodule
