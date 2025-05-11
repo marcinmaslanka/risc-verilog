@@ -11,13 +11,17 @@ This project implements a simplified 5-stage pipelined MIPS32 processor in Veril
 - Pipelined hazard handling through basic branch prediction and pipeline control
 - Halt instruction to stop execution
 
-## 📁 Repository Structure
+## 🧪 Testbenches
+The following testbenches demonstrate and verify the functionality of the MIPS32 pipelined processor:
 
-mips32/
-├── mips32.v # Main Verilog source file
-├── README.md # This file
-├── testbench.v # (Optional) Testbench for simulation
-└── mem_init.hex # (Optional) Memory initialization file
+File	Description
+mips32_tb.v	Basic testbench to validate instruction execution and processor pipeline.
+mips32_tb2.v	Adds memory read/write tests and validates ALU operations.
+mips32_tb3.v	Verifies conditional branching and program flow control.
+mips32_tb4.v	Tests loop execution by calculating the sum of the first N natural numbers.
+mips32_tb5.v	Calculates the Fibonacci sequence up to N elements, storing results in memory.
+
+You can run each testbench in a simulator like Icarus Verilog and observe register/memory changes via $monitor or waveform dump.
 
 
 ## 🛠️ Instructions
@@ -49,14 +53,15 @@ gtkwave dump.vcd
 ```
 
 ## 🧪 Supported Instructions
-Instruction	Type	Description
-```
-add, sub, and, or, slt, mul	R-type	ALU operations
-addi, subi, slti	I-type	Immediate ALU operations
-lw, sw	I-type	Load/store word from/to memory
-beqz, bneqz	I-type	Branch if equal/not equal zero
-hlt	I-type	Halt processor execution
-```
+
+| Instruction                             | Type   | Description                          |
+|-----------------------------------------|--------|--------------------------------------|
+| `add`, `sub`, `and`, `or`, `slt`, `mul` | R-type | ALU operations                       |
+| `addi`, `subi`, `slti`                  | I-type | Immediate ALU operations             |
+| `lw`, `sw`                              | I-type | Load/store word from/to memory       |
+| `beqz`, `bneqz`                         | I-type | Branch if equal/not equal to zero    |
+| `hlt`                                   | I-type | Halt processor execution             |
+
 
 ## 📦 Parameters
 Register File: 32 registers (32-bit each)
