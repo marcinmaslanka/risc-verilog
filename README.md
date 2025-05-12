@@ -15,11 +15,11 @@ This project implements a simplified 5-stage pipelined MIPS32 processor in Veril
 The following testbenches demonstrate and verify the functionality of the MIPS32 pipelined processor:
 
 File	Description
-mips32_tb.v	Basic testbench to validate instruction execution and processor pipeline.
-mips32_tb2.v	Adds memory read/write tests and validates ALU operations.
-mips32_tb3.v	Verifies conditional branching and program flow control.
-mips32_tb4.v	Tests loop execution by calculating the sum of the first N natural numbers.
-mips32_tb5.v	Calculates the Fibonacci sequence up to N elements, storing results in memory.
+- mips32_tb.v	Basic testbench to validate instruction execution and processor pipeline.
+- mips32_tb2.v	Adds memory read/write tests and validates ALU operations.
+- mips32_tb3.v	Verifies conditional branching and program flow control.
+- mips32_tb4.v	Tests loop execution by calculating the sum of the first N natural numbers.
+- mips32_tb5.v	Calculates the Fibonacci sequence up to N elements, storing results in memory.
 
 You can run each testbench in a simulator like Icarus Verilog and observe register/memory changes via $monitor or waveform dump.
 
