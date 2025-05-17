@@ -1,3 +1,24 @@
+// ============================================================================
+// Testbench: MIPS32 Pipelined Processor – Bubble Sort
+//
+// Description : This testbench verifies a MIPS32 processor implementation by
+//               performing integer division (quotient and remainder) of two
+//               values stored in memory. It uses a subtraction loop to emulate
+//               division: a = 23, b = 5 → a / b = 4 (quotient), 3 (remainder).
+//
+//               Registers used:
+//               - r1: dividend (a)
+//               - r2: divisor (b)
+//               - r3: quotient
+//               - r4: remainder
+//               - r5: temporary pointer to memory
+//               - r8: result of comparison (slt)
+//
+// Author: Marcin Maslanka
+// 
+// ============================================================================
+
+
 module mips32_tb10;
 
   reg clk1, clk2;
