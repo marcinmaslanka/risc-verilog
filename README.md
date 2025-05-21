@@ -2,6 +2,9 @@
 
 This project implements a simplified 5-stage pipelined MIPS32 processor in Verilog HDL. The design is educational and demonstrates instruction flow through pipeline stages: **Instruction Fetch (IF)**, **Instruction Decode (ID)**, **Execute (EX)**, **Memory Access (MEM)**, and **Write Back (WB)**.
 
+![image](https://github.com/user-attachments/assets/5be09901-5a4a-46de-b57b-c24f9e1066c1)
+
+
 ## 📌 Features
 
 - 32-bit architecture with a 5-stage pipeline
