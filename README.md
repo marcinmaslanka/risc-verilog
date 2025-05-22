@@ -18,25 +18,24 @@ This project implements a simplified 5-stage pipelined MIPS32 processor in Veril
 The following testbenches demonstrate and verify the functionality of the MIPS32 pipelined processor:
 
 
-| **File**        | **Description**                                                                |
-| --------------- | ------------------------------------------------------------------------------ |
-| `mips32_tb.v`   | Basic testbench to validate instruction execution and processor pipeline.      |
-| `mips32_tb2.v`  | Adds memory read/write tests and validates ALU operations.                     |
-| `mips32_tb3.v`  | Verifies conditional branching and program flow control.                       |
-| `mips32_tb4.v`  | Tests loop execution by calculating the sum of the first N natural numbers.    |
-| `mips32_tb5.v`  | Calculates the Fibonacci sequence up to N elements, storing results in memory. |
-| `mips32_tb6.v`  | Finds the maximum value in an array using conditionals and branching.          |
-| `mips32_tb7.v`  | Sums the elements of an array stored in memory and computes the average.       |
-| `mips32_tb8.v`  | Loads an array from memory and finds the maximum element.                      |
-| `mips32_tb9.v`  | Sorts a small array of integers using bubble sort.                             |
-| `mips32_tb10.v` | Performs integer division of two values stored in memory.                      |
-| `mips32_tb11.v` | Calculates $a^b$ (a to the power of b) using repeated multiplication.          |
-| `mips32_tb12.v` | Computes the mode (most frequent value) in a dataset using nested loops.       |
-| `mips32_tb13.v` | Counts the number of set bits (1s) in a register using bitwise operations.     |
-| `mips32_tb14.v` | Implements manual logical left and right shifts using loops and bit masking.   |
-| `mips32_tb15.v` | Implements a simple 3-state finite state machine (FSM) using MIPS32 logic.     |
-| `mips32_tb16.v` | Encrypts ASCII characters using a Caesar Cipher with a fixed shift.            |
-
+| Testbench File  | Folder Name                  | Description                               |
+| --------------- | ---------------------------- | ----------------------------------------- |
+| `mips32_tb.v`   | `basic_execution`            | Basic instruction and pipeline validation |
+| `mips32_tb2.v`  | `memory_and_alu`             | Tests memory access and ALU ops           |
+| `mips32_tb3.v`  | `branching_and_control_flow` | Conditional branching and flow control    |
+| `mips32_tb4.v`  | `sum_of_n_numbers`           | Looping: sum of first N numbers           |
+| `mips32_tb5.v`  | `fibonacci_sequence`         | Fibonacci using memory and loops          |
+| `mips32_tb6.v`  | `find_max_in_array`          | Maximum value in array                    |
+| `mips32_tb7.v`  | `sum_and_average`            | Sum and average of array elements         |
+| `mips32_tb8.v`  | `load_array_find_max`        | Load from memory + find max               |
+| `mips32_tb9.v`  | `bubble_sort`                | Bubble sort algorithm                     |
+| `mips32_tb10.v` | `integer_division`           | Division using subtraction                |
+| `mips32_tb11.v` | `power_function`             | a^b using repeated multiplication         |
+| `mips32_tb12.v` | `mode_finder`                | Find most frequent value (mode)           |
+| `mips32_tb13.v` | `bit_counting`               | Count set bits (bitwise ops)              |
+| `mips32_tb14.v` | `manual_shifts`              | Manual logical shifts                     |
+| `mips32_tb15.v` | `fsm_test`                   | 3-state finite state machine              |
+| `mips32_tb16.v` | `caesar_cipher`              | Caesar cipher encryption                  |
 
 
 You can run each testbench in a simulator like Icarus Verilog and observe register/memory changes via $monitor or waveform dump.
@@ -55,19 +54,19 @@ You can run each testbench in a simulator like Icarus Verilog and observe regist
 1. Compile:
 
 ```sh
-iverilog -o mips32_tb mips32.v testbench.v
+iverilog -o mips32_tb.vvp mips32_tbxx.v mips32.v
 ```
 
 Run:
 
 ```sh
-vvp mips32_tb
+vvp mips32_tb.vvp
 ```
 
 (Optional) View waveforms:
 
 ```sh
-gtkwave dump.vcd
+gtkwave mips32_tb.vcd
 ```
 
 ## 🧪 Supported Instructions
