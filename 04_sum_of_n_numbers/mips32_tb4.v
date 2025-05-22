@@ -13,7 +13,7 @@
 //     - Store sum into memory[101]
 //
 // Author: Marcin Maslanka  
-// Date: 06.05.2025
+// 
 // ============================================================================
 
 module mips32_tb4;
@@ -62,9 +62,9 @@ module mips32_tb4;
     uut.mem[7]  = 32'h0ce77800; // dummy
     uut.mem[8]  = 32'h28630001; // addi r3, r3, 1         ; i++
     uut.mem[9]  = 32'h0ce77800; // dummy
-    uut.mem[10] = 32'h1023202a; // slt  r4, r3, r1        ; r4 = (i < N) ? 1 : 0
+    uut.mem[10] = 32'h1023202a; // slt  r4, r1, r3        ; r4 = (N < i) ? 1 : 0
     uut.mem[11] = 32'h0ce77800; // dummy
-    uut.mem[12] = 32'h3880fff9; // bneqz r4, -7           ; if r4 != 0, jump to loop
+    uut.mem[12] = 32'h3880fff9; // beqz r4, -7           ; if r4 = 0, jump to loop
 
     // Store result
     uut.mem[13] = 32'h28010065; // addi r1, r0, 101       ; r1 = address to store result
