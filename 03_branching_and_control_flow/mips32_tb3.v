@@ -13,7 +13,7 @@
 //   and waveform output is generated for post-simulation inspection.
 //
 // Author: Marcin Maslanka  
-// Date: 06.05.2025
+// 
 // ============================================================================
 
 module mips32_tb3;
