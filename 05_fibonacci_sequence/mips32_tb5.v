@@ -5,7 +5,7 @@
 //   The value of N is stored in memory, and the computed Fibonacci numbers are stored in another memory location.
 //
 // Author: Marcin Maslanka  
-// Date: 11.05.2025
+// 
 // ============================================================================
 
 module mips32_tb5;
