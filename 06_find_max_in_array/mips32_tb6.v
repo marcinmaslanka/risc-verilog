@@ -5,7 +5,7 @@
 //   in memory in-place. Array starts at memory[100].
 //
 // Author: Marcin Maslanka
-// Date: 11.05.2025
+// 
 // ============================================================================
 
 module mips32_tb6;
