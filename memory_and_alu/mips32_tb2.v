@@ -8,7 +8,7 @@
 //   Waveform output is also generated for debugging via GTKWave.
 //
 // Author: Marcin Maslanka  
-// Date: 06.05.2025
+// 
 // ============================================================================
 
 module mips32_tb2;
@@ -27,10 +27,6 @@ module mips32_tb2;
   begin
     clk1 = 0; clk2 = 0;
 
-    // Waveform output setup
-    $dumpfile("mips32_waveform.vcd");  // Output file for GTKWave
-    $dumpvars(0, mips32_tb2);          // Dump all variables in this module
-
     // 50 clock cycles (each iteration represents one full cycle)
     repeat (50) 
     begin
@@ -46,9 +42,12 @@ module mips32_tb2;
   // Initialization of memory and registers
   initial
   begin
-    // Initial state: r1 points to memory address 120
-    //uut.regfile[1] = 120;        // r1 = 120 (address)
-    
+    // Initialize register file: R0 to R31 = 0 to 31
+    for (k = 0; k < 32; k = k + 1)
+      uut.regfile[k] = k;
+    // Initialize memory: mem[120] = 85
+    uut.mem[120] = 85;
+        
 
     // Load program instructions (machine code)
     uut.mem[0] = 32'h28010078; // addi r1, r0, 120       ; r1 = 120
@@ -60,15 +59,19 @@ module mips32_tb2;
     uut.mem[6] = 32'h24220001; // sw   r2, 1(r1)         ; mem[121] = r2
     uut.mem[7] = 32'hfc000000; // hlt                    ; halt execution
 
-    uut.mem[120]   = 85;         // memory[120] = 85
-
+  
     // Initialize control signals
     uut.pc = 0;
     uut.halted = 0;
     uut.taken_branch = 0;
 
-    // Wait for simulation to complete
-    #200;
+    // Waveform output setup
+    $dumpfile("mips32_tb.vcd");         // Output file for GTKWave
+    $dumpvars(0, mips32_tb2);           // Dump all variables in this module
+    #300;
+    $display("Simulation finished.");
+    $finish;                                                       
+
   end
 
 endmodule
