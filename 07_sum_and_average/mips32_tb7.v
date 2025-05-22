@@ -6,11 +6,11 @@
 //   The array begins at memory address 100, and its length is stored in memory[99].
 //
 //   Result:
-//     - Sum is stored in register r10
+//     - Sum is stored in register r3
 //     - Average is stored in register r4
 //
 // Author: Marcin Maslanka
-// Date: 2025-05-11
+// 
 // 
 // ============================================================================
 
