@@ -26,27 +26,27 @@ uut.mem[6] = 32'hfc000000; // hlt                   ; stop execution
 ```
 
 ## Final Register Values
-Register	Value
-r1	10
-r2	20
-r3	25
-r4	30
-r5	55
+  Register	Value
+  r1	10
+  r2	20
+  r3	25
+  r4	30
+  r5	55
 
 ## ▶️ How to Run (Using Icarus Verilog)
 Compile the design:
 
 ```bash
 iverilog -o mips32_tb.out mips32.v mips32_tb.v
-Run the simulation:
 ```
+
+Run the simulation:
 
 ```bash
 vvp mips32_tb.out
-View waveform (optional):
 ```
 
-If you have GTKWave installed:
+View waveform:
 
 ```bash
 gtkwave mips32_tb.vcd
