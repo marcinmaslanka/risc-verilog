@@ -9,6 +9,8 @@ ISSN: 2278-3075 (Online), Volume-9 Issue-1, November 2019
 
 Source 2: VERILOG MODELING OF THE PROCESSOR (PART 1) ; https://www.youtube.com/watch?v=NaO-xw6Mlw0&list=PLJ5C_6qdAvBELELTSPgzYkQg3HgclQh-5&index=40
 
+Source 3: https://www.cs.umd.edu/~meesh/411/CA-online/chapter/pipelining-mips-implementation/index.html#:~:text=In%20general%2C%20let%20the%20instruction,%2C%20Ei%2C%20Mi%20and%20Wi.
+
 ## 📌 Features
 
 - 32-bit architecture with a 5-stage pipeline
