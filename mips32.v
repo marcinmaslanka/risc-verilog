@@ -8,8 +8,8 @@
 //   It supports a subset of MIPS instructions including R-type, I-type,
 //   memory access, and branch instructions.
 // 
-// Author: Marcin Maslanka
-// Date: 05 Mai 2025
+// 
+// 
 // ============================================================================
 
 module mips32 (clk1, clk2);
